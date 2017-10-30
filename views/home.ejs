@@ -4,9 +4,22 @@
         <title>Chat</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            .active {
+                color: red;
+            }
+        </style>
     </head>
     <body>
         <h3>Socket.io Khoa Pham 123</h3>
+        <button id="btnShow">Show sth</button>
+        <div id="divMessages">
+            <p>Ti: Hello</p>
+            <p>Teo: Hi</p>
+            <p>Tun: Bye</p>
+        </div>
+        <input type="text" id="txtMessage" placeholder="Enter your message">
+        <button id="btnSend">Send</button>
     </body>
 </html>
 <script src="jquery.js"></script>
