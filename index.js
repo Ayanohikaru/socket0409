@@ -13,6 +13,12 @@ server.listen(3000, () => console.log('Server started!'));
 
 io.on('connection', socket => {
     console.log(socket.id);
+    // setInterval(() => {
+    //     socket.emit('SERVER_SEND_MESSSAGE', Math.random());
+    // }, 1000);
+    socket.on('CLIENT_SEND_MESSSAGE', message => {
+        console.log(message);
+    });
 });
 
 require('reload')(app);
