@@ -17,7 +17,7 @@ io.on('connection', socket => {
     //     socket.emit('SERVER_SEND_MESSSAGE', Math.random());
     // }, 1000);
     socket.on('CLIENT_SEND_MESSSAGE', message => {
-        console.log(message);
+        io.emit('SERVER_SEND_MESSSAGE', 'You: ' + message);
     });
 });
 

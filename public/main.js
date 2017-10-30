@@ -6,9 +6,9 @@ $('#btnSend').click(() => {
     $('#txtMessage').val('');
 });
 
-// socket.on('SERVER_SEND_MESSSAGE', message => {
-//     console.log(message);
-// });
+socket.on('SERVER_SEND_MESSSAGE', message => {
+    $('#divMessages').append(`<p>${message}</p>`);
+});
 // setInterval(() => {
 //     socket.emit('CLIENT_SEND_MESSSAGE', Math.random());
 // }, 1000);
