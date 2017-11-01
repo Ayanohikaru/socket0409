@@ -22,11 +22,16 @@ const users = [];
 
 io.on('connection', socket => {
     console.log(socket.id);
-    // setInterval(() => {
-    //     socket.emit('SERVER_SEND_MESSSAGE', Math.random());
-    // }, 1000);
+    
     socket.on('CLIENT_SEND_MESSSAGE', message => {
         io.emit('SERVER_SEND_MESSSAGE', 'You: ' + message);
+    });
+
+    socket.on('CLIENT_SIGN_IN', username => {
+        const isExist = users.some(user => user.username === username);
+        if (isExist) return socket.emit('SIGN_IN_CONFIRM', false);
+        socket.emit('SIGN_IN_CONFIRM', true);
+        users.push(new User(socket.id, username));
     });
 });
 
