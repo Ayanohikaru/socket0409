@@ -11,6 +11,15 @@ app.use(express.static('public'));
 app.get('/', (req, res) => res.render('home'));
 server.listen(3000, () => console.log('Server started!'));
 
+class User {
+    constructor(id, username) {
+        this.id = id;
+        this.username = username;
+    }
+}
+
+const users = [];
+
 io.on('connection', socket => {
     console.log(socket.id);
     // setInterval(() => {
@@ -22,3 +31,9 @@ io.on('connection', socket => {
 });
 
 require('reload')(app);
+
+// 1. Clien gui thong tin dang nhap
+// 2. Kiem tra ton tai username
+// 3. Neu ton tai thi alert('Usename da ton tai')
+// 4. Neu chua ton tai thi dk thanh cong -> hide divSignIn, show divChat
+// 5. Push user vao mang user
