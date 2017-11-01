@@ -23,15 +23,18 @@ socket.on('SIGN_IN_CONFIRM', isSuccess => {
     $('#divChat').show();
     $('#divSignIn').hide();
     socket.on('NEW_USER', user => {
-        $('#divUsers').append(`<p>${user.username}</p>`)
+        $('#divUsers').append(`<p id="si-${user.id}">${user.username}</p>`)
     }); 
 });
 
 socket.on('USERS_DATA', users => {
-    users.forEach(user => $('#divUsers').append(`<p>${user.username}</p>`))
+    users.forEach(user => $('#divUsers').append(`<p id="si-${user.id}">${user.username}</p>`))
 });
 
 
 // setInterval(() => {
 //     socket.emit('CLIENT_SEND_MESSSAGE', Math.random());
 // }, 1000);
+socket.on('USER_DISCONNECT', user => {
+    $(`#si-${user.id}`).remove();
+});

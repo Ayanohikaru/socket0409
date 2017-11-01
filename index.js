@@ -21,20 +21,29 @@ class User {
 const users = [];
 
 io.on('connection', socket => {
-    console.log(socket.id);
+
+    let currentUsername;
     
     socket.on('CLIENT_SEND_MESSSAGE', message => {
-        io.emit('SERVER_SEND_MESSSAGE', 'You: ' + message);
+        io.emit('SERVER_SEND_MESSSAGE', currentUsername + ': ' + message);
     });
 
     socket.on('CLIENT_SIGN_IN', username => {
         const isExist = users.some(user => user.username === username);
         if (isExist) return socket.emit('SIGN_IN_CONFIRM', false);
+        currentUsername = username;
         socket.emit('SIGN_IN_CONFIRM', true);
         socket.emit('USERS_DATA', users);
         const user = new User(socket.id, username);
         users.push(user);
         io.emit('NEW_USER', user);
+    });
+
+    socket.on('disconnect', () => {
+        const index = users.findIndex(user => user.id === socket.id);
+        if (index === -1) return;
+        io.emit('USER_DISCONNECT', users[index]);
+        users.splice(index, 1);
     });
 });
 
