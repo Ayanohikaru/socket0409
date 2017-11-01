@@ -22,7 +22,16 @@ socket.on('SIGN_IN_CONFIRM', isSuccess => {
     if (!isSuccess) return alert('Username da ton tai');
     $('#divChat').show();
     $('#divSignIn').hide();
+    socket.on('NEW_USER', user => {
+        $('#divUsers').append(`<p>${user.username}</p>`)
+    }); 
 });
+
+socket.on('USERS_DATA', users => {
+    users.forEach(user => $('#divUsers').append(`<p>${user.username}</p>`))
+});
+
+
 // setInterval(() => {
 //     socket.emit('CLIENT_SEND_MESSSAGE', Math.random());
 // }, 1000);

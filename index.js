@@ -31,14 +31,14 @@ io.on('connection', socket => {
         const isExist = users.some(user => user.username === username);
         if (isExist) return socket.emit('SIGN_IN_CONFIRM', false);
         socket.emit('SIGN_IN_CONFIRM', true);
-        users.push(new User(socket.id, username));
+        socket.emit('USERS_DATA', users);
+        const user = new User(socket.id, username);
+        users.push(user);
+        io.emit('NEW_USER', user);
     });
 });
 
 require('reload')(app);
 
-// 1. Clien gui thong tin dang nhap
-// 2. Kiem tra ton tai username
-// 3. Neu ton tai thi alert('Usename da ton tai')
-// 4. Neu chua ton tai thi dk thanh cong -> hide divSignIn, show divChat
-// 5. Push user vao mang user
+// 1. Khi dang nhap thanh cong, gui ve users -> Client show ra
+// 2. Khi co nguoi dang ky moi, thong bao cho tat ca
