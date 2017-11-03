@@ -48,10 +48,13 @@ socket.on('USERS_DATA', users => {
     users.forEach(user => $('#divUsers').append(`<p id="si-${user.id}">${user.username}</p>`))
 });
 
-
-// setInterval(() => {
-//     socket.emit('CLIENT_SEND_MESSSAGE', Math.random());
-// }, 1000);
 socket.on('USER_DISCONNECT', user => {
     $(`#si-${user.id}`).remove();
 });
+
+/*
+    1. Set su kien cho cac the p tring divRooms - active style
+    2. Emit su kien join room cho server
+    3. Moi client o trong 1 room duy nhat - Neu da ton tai, leaveRoom
+    4. Them button sendRoom
+*/
