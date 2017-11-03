@@ -12,6 +12,13 @@ $('#divUsers').on('click', 'p', function() {
     recId = preId.substring(3);
 });
 
+$('#divRooms').on('click', 'p', function() {
+    $('#divRooms p').removeClass('active');
+    $(this).addClass('active');
+    const roomName = $(this).text();
+    socket.emit('CLIENT_JOIN_ROOM', roomName);
+});
+
 $('#btnSignIn').click(() => {
     const username = $('#txtUsername').val();
     socket.emit('CLIENT_SIGN_IN', username);
@@ -28,6 +35,12 @@ $('#btnSendPrivate').click(() => {
     if (!recId) return alert('Please choose a user');
     const message = $('#txtMessage').val();
     socket.emit('CLIENT_SEND_PRIVATE_MESSSAGE', { message, recId });
+    $('#txtMessage').val('');
+});
+
+$('#btnSendRoom').click(() => {
+    const message = $('#txtMessage').val();
+    socket.emit('CLIENT_SEND_ROOM_MESSSAGE', message);
     $('#txtMessage').val('');
 });
 
@@ -53,7 +66,7 @@ socket.on('USER_DISCONNECT', user => {
 });
 
 /*
-    1. Set su kien cho cac the p tring divRooms - active style
+    1. Set su kien cho cac the p trong divRooms - active style
     2. Emit su kien join room cho server
     3. Moi client o trong 1 room duy nhat - Neu da ton tai, leaveRoom
     4. Them button sendRoom

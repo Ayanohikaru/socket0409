@@ -23,7 +23,7 @@ const users = [];
 io.on('connection', socket => {
 
     let currentUsername;
-    
+    let currentRoomName;
     socket.on('CLIENT_SEND_MESSSAGE', message => {
         io.emit('SERVER_SEND_MESSSAGE', currentUsername + ': ' + message);
     });
@@ -36,6 +36,10 @@ io.on('connection', socket => {
         socket.emit('SERVER_SEND_MESSSAGE', currentUsername + ': ' + message)
     });
 
+    socket.on('CLIENT_SEND_ROOM_MESSSAGE', message => {
+        io.in(currentRoomName).emit('SERVER_SEND_MESSSAGE', message);
+    });
+
     socket.on('CLIENT_SIGN_IN', username => {
         const isExist = users.some(user => user.username === username);
         if (isExist) return socket.emit('SIGN_IN_CONFIRM', false);
@@ -45,6 +49,23 @@ io.on('connection', socket => {
         const user = new User(socket.id, username);
         users.push(user);
         io.emit('NEW_USER', user);
+    });
+
+    
+    socket.on('CLIENT_JOIN_ROOM', roomName => {
+        // if (!currentRoomName) {
+            //     return socket.leave(currentRoomName, () => {
+            //         socket.join(roomName);
+            //     });
+            // }
+        // socket.join(roomName);
+        if (!currentRoomName) {
+            socket.join(roomName);
+            return currentRoomName = roomName;
+        }
+        socket.leave(currentRoomName, () => {
+            socket.join(roomName, () => currentRoomName = roomName);
+        });
     });
 
     socket.on('disconnect', () => {
