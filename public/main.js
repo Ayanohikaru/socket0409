@@ -2,6 +2,15 @@ const socket = io();
 
 $('#divChat').hide();
 
+// $('#divChat p').click(function() {
+//     console.log($(this).text());
+// });
+$('#divChat').on('click', 'p', function() {
+    $('#divChat p').removeClass('active');
+    $(this).addClass('active');
+    console.log($(this).text());
+});
+
 $('#btnSignIn').click(() => {
     const username = $('#txtUsername').val();
     socket.emit('CLIENT_SIGN_IN', username);
