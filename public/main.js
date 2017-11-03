@@ -5,8 +5,8 @@ $('#divChat').hide();
 // $('#divChat p').click(function() {
 //     console.log($(this).text());
 // });
-$('#divChat').on('click', 'p', function() {
-    $('#divChat p').removeClass('active');
+$('#divUsers').on('click', 'p', function() {
+    $('#divUsers p').removeClass('active');
     $(this).addClass('active');
     const preId = $(this).attr('id');
     recId = preId.substring(3);
@@ -30,7 +30,6 @@ $('#btnSendPrivate').click(() => {
     socket.emit('CLIENT_SEND_PRIVATE_MESSSAGE', { message, recId });
     $('#txtMessage').val('');
 });
-
 
 socket.on('SERVER_SEND_MESSSAGE', message => {
     $('#divMessages').append(`<p>${message}</p>`);
