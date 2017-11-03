@@ -28,6 +28,14 @@ io.on('connection', socket => {
         io.emit('SERVER_SEND_MESSSAGE', currentUsername + ': ' + message);
     });
 
+    socket.on('CLIENT_SEND_PRIVATE_MESSSAGE', obj => {
+        const { recId, message } = obj;
+        // console.log(obj);
+        // io.emit('SERVER_SEND_MESSSAGE', currentUsername + ': ' + message);
+        socket.to(recId).emit('SERVER_SEND_MESSSAGE', currentUsername + ': ' + message)
+        socket.emit('SERVER_SEND_MESSSAGE', currentUsername + ': ' + message)
+    });
+
     socket.on('CLIENT_SIGN_IN', username => {
         const isExist = users.some(user => user.username === username);
         if (isExist) return socket.emit('SIGN_IN_CONFIRM', false);

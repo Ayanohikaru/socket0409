@@ -1,5 +1,5 @@
 const socket = io();
-
+let recId;
 $('#divChat').hide();
 
 // $('#divChat p').click(function() {
@@ -8,7 +8,8 @@ $('#divChat').hide();
 $('#divChat').on('click', 'p', function() {
     $('#divChat p').removeClass('active');
     $(this).addClass('active');
-    console.log($(this).text());
+    const preId = $(this).attr('id');
+    recId = preId.substring(3);
 });
 
 $('#btnSignIn').click(() => {
@@ -22,6 +23,14 @@ $('#btnSend').click(() => {
     socket.emit('CLIENT_SEND_MESSSAGE', message);
     $('#txtMessage').val('');
 });
+
+$('#btnSendPrivate').click(() => {
+    if (!recId) return alert('Please choose a user');
+    const message = $('#txtMessage').val();
+    socket.emit('CLIENT_SEND_PRIVATE_MESSSAGE', { message, recId });
+    $('#txtMessage').val('');
+});
+
 
 socket.on('SERVER_SEND_MESSSAGE', message => {
     $('#divMessages').append(`<p>${message}</p>`);
